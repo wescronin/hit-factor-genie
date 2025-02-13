@@ -1,29 +1,41 @@
-<h2>Hit Factor Calculator</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USPSA Points Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>USPSA Points Calculator</h1>
+        <label for="highHitFactor">High Hit Factor:</label>
+        <input type="number" id="highHitFactor" placeholder="Enter High Hit Factor">
+        
+        <label for="roundCount">Round Count:</label>
+        <input type="number" id="roundCount" placeholder="Enter Round Count">
+        
+        <button id="calculateBtn">Calculate</button>
+        <div id="result"></div>
+    </div>
+</body>
+</html>
 
-<label for="highHitFactor">High Hit Factor:</label>
-<input type="number" id="highHitFactor" placeholder="Enter HF" />
-
-<label for="roundCount">Round Count:</label>
-<input type="number" id="roundCount" placeholder="Enter Rounds" />
-
-<button id="calculateBtn">Calculate</button>
-
-<div id="result"></div>
-
-<script>
+/* script.js */
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("calculateBtn").addEventListener("click", function() {
         let highHitFactor = parseFloat(document.getElementById("highHitFactor").value);
         let roundCount = parseInt(document.getElementById("roundCount").value);
         
-        if (isNaN(highHitFactor) || isNaN(roundCount) || roundCount < 1 || roundCount > 75) {
-            document.getElementById("result").innerHTML = "Please enter valid numbers.";
+        if (isNaN(highHitFactor) || isNaN(roundCount) || roundCount <= 0) {
+            document.getElementById("result").innerHTML = "<p>Please enter valid numbers.</p>";
             return;
         }
-
+        
         let charliePercentage = 0;
         let deltaPercentage = 0;
-
+        
         if (highHitFactor >= 12) {
             charliePercentage = 50;
         } else if (highHitFactor >= 8) {
@@ -33,16 +45,70 @@ document.addEventListener("DOMContentLoaded", function() {
             charliePercentage = 10;
             deltaPercentage = 1;
         }
-
+        
         let allowedCharlies = Math.round((charliePercentage / 100) * roundCount);
         let allowedDeltas = Math.round((deltaPercentage / 100) * roundCount);
         let makeUpTime = (highHitFactor > 0) ? (4 / highHitFactor).toFixed(2) : "N/A";
-
-        document.getElementById("result").innerHTML = `
-            <p>Allowed Charlies: ${allowedCharlies}</p>
-            <p>Allowed Deltas: ${allowedDeltas}</p>
-            <p>Time to Make Up a Miss: ${makeUpTime} seconds</p>
-        `;
+        
+        document.getElementById("result").innerHTML = `<p>Allowed Charlies: ${allowedCharlies}</p>
+                                                        <p>Allowed Deltas: ${allowedDeltas}</p>
+                                                        <p>Time to Make Up a Miss: ${makeUpTime} seconds</p>`;
     });
 });
-</script>
+
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1e1e2e;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    background: #282a36;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    margin: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: none;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px;
+    width: 100%;
+    background: #ff5555;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background: #ff3333;
+}
+
+#result {
+    margin-top: 15px;
+    font-size: 14px;
+}
