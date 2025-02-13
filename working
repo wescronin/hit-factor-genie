@@ -1,0 +1,42 @@
+<div>
+  <label>High Hit Factor: <input type="number" id="highHitFactor"></label>
+  <label>Round Count: <input type="number" id="roundCount"></label>
+  <button id="calculateBtn">Calculate</button>
+  <div id="result"></div>
+</div>
+
+<script>
+  // Directly execute the script to avoid any issues with DOMContentLoaded
+  document.getElementById("calculateBtn").addEventListener("click", function() {
+    let highHitFactor = parseFloat(document.getElementById("highHitFactor").value);
+    let roundCount = parseInt(document.getElementById("roundCount").value);
+    
+    if (isNaN(highHitFactor) || isNaN(roundCount) || roundCount < 1) {
+      document.getElementById("result").innerHTML = "Please enter valid numbers.";
+      return;
+    }
+
+    let charliePercentage = 0;
+    let deltaPercentage = 0;
+
+    if (highHitFactor >= 12) {
+      charliePercentage = 50;
+    } else if (highHitFactor >= 8) {
+      charliePercentage = 20;
+      deltaPercentage = 5;
+    } else if (highHitFactor >= 4) {
+      charliePercentage = 10;
+      deltaPercentage = 1;
+    }
+
+    let allowedCharlies = Math.round((charliePercentage / 100) * roundCount);
+    let allowedDeltas = Math.round((deltaPercentage / 100) * roundCount);
+    let makeUpTime = (highHitFactor > 0) ? (4 / highHitFactor).toFixed(2) : "N/A";
+
+    document.getElementById("result").innerHTML = `
+      Allowed Charlies: ${allowedCharlies} <br>
+      Allowed Deltas: ${allowedDeltas} <br>
+      Time to Make Up a Miss: ${makeUpTime} seconds
+    `;
+  });
+</script>
